@@ -1,54 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-</head>
-<body>
-<div>
 <?php
-session_start();
-require_once('connect.php');
-if(isset($_SESSION['userid'])){
-    $sql = "select * from posts";
-    $result = mysqli_query($conn, $sql);
+session start();
+ob start();
 
+include "library/config.php";
 
-    echo '<p class="login-status">you are logged in</p>';
-    echo 'hello'." ".$_SESSION['username'];
-
-    echo '<div class="output"> ';
-
-        while($row = mysqli_fetch_assoc($result)){
-            echo 'message:'.' ' .$row['msg'].'</br>';
-        } 
-        echo '</div>';
-        
-
-    echo '<form method = "post" action = "send.php">
-    <input type = "text" name="msg" placeholder="Type here.." class="form-control"></br>
-    <input type="submit" value="send">
-    </form>';
-
-    echo '<form action="logout.php" method="post">
-        <button type="submit" class="btn btn-primary" name="logout-submit">Logout</button>
-        </form>';
-
-}elseif(!isset($_SESSION['userid'])){
-    echo '<p class="login-status">you are logged out</p> <br>';
-    
-    echo '<a href="login.php">login now</a>';
-}else{
-    echo 'dont know why da fuck is it not working';
+if(empty($SESSION['username']) or
+empty($SESSION['password'])) {
+    echo "<p align='center'> You need to login</p>";
+    echo "<meta http-equiv='refresh' content='2;url=login.php>";
+   } else {
+    define('INDEX', true);
 }
-
-
 ?>
-
-
-</div>
-</body>
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Dashboard</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <header>YouTalk</header>
+        <div class='container'>
+        </div>
+            <aside>
+        <ul class='menu'>
+            <li> <a href="?page=dashboard" class='active'>Dashboard </a> </li>
+            <li> <a href="?page=chat">Chat</a></li>
+            <li> <a href="?page=profile">Profile</a></li>
+            <li> <a href="?page=settings">Settings</a></li>
+            <li> <a href="?page=logout.php">Log Out</a></li>
+        </ul>
+            </aside>
+        <section class="main">
+            <?php include "content.php"; ?>
+        </section>
+        </div>
+        <footer>
+            Copyright &copy; Webvengers
+        </footer>
+    </body>
 </html>
-
+<?php 
+}
+?>
